@@ -2,15 +2,8 @@ from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .services import build_credentials_request
-import os
-import jwt
-import time
-from .util import pst, startIssuance
-import affinidi_tdk_credential_issuance_client
-from dotenv import load_dotenv
 
-load_dotenv()
-
+from .util import get_credentials, pst, startIssuance
 
 
 def api_hello(request):
@@ -42,8 +35,6 @@ def issue_credential(request):
     return JsonResponse({"error": "Invalid request method."}, status=400)
 
 
-
-
 @csrf_exempt
 def fetch_credential(request):
     if request.method == "POST":
@@ -53,10 +44,12 @@ def fetch_credential(request):
             if not issuanceId:
                 return JsonResponse({"error": "issuanceId is required"}, status=400)
 
-            return JsonResponse({"issuanceId": issuanceId, "status": "Credential fetched successfully"}, status=200)
+            result = get_credentials(issuanceId)
+            return JsonResponse(result, safe=False, status=200)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON format"}, status=400)
     return JsonResponse({"error": "Invalid request method."}, status=400)
+
 
 @csrf_exempt
 def revoke_credential(request):
@@ -73,6 +66,7 @@ def revoke_credential(request):
             return JsonResponse({"error": "Invalid JSON format"}, status=400)
     return JsonResponse({"error": "Invalid request method."}, status=400)
 
+
 @csrf_exempt
 def verify_credential(request):
     if request.method == "POST":
@@ -85,4 +79,3 @@ def verify_credential(request):
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON format"}, status=400)
     return JsonResponse({"error": "Invalid request method."}, status=400)
-

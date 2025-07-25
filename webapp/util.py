@@ -1,13 +1,12 @@
 import logging
 import affinidi_tdk_auth_provider
 import affinidi_tdk_credential_issuance_client
-
-from dotenv import load_dotenv
-
-load_dotenv()
 import os
 import jwt
 import time
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # Environment variables
 api_gateway_url = os.environ.get("API_GATEWAY_URL", "")
@@ -22,6 +21,7 @@ key_id = os.environ.get("KEY_ID", "")
 vault_url = os.environ.get("VAULT_URL", "")
 
 configuration_id = os.environ.get("CONFIGURATION_ID", "")
+
 TOKEN_FILE_PATH = "token/pst_response.jwt"
 
 
@@ -122,4 +122,24 @@ def startIssuance(payload_for_issuance_api):
         return response
     except Exception as e:
         logging.error(f"Error processing checks: {e}")
+        return {"success": False, "error": str(e)}
+
+def get_credentials(issuance_id):
+    try:
+        if not issuance_id:
+            return {"success": False, "error": "No issuanceId provided"}
+
+        print("Fetching credentials for issuanceId:", issuance_id)
+        print("Using configuration_id:", configuration_id)
+        print("Using project_id:", project_id)
+        configuration = affinidi_tdk_credential_issuance_client.Configuration()
+        configuration.api_key["ProjectTokenAuth"] = pst()
+        with affinidi_tdk_credential_issuance_client.ApiClient(configuration) as api_client:
+            api_instance = affinidi_tdk_credential_issuance_client.CredentialsApi(api_client)
+            projectId = project_id
+            response = api_instance.get_issuance_id_claimed_credential(projectId, configuration_id, issuance_id)
+            print("response", response)
+            return response.to_dict()
+    except Exception as e:
+        logging.error(f"Error fetching credentials: {e}")
         return {"success": False, "error": str(e)}

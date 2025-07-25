@@ -682,7 +682,7 @@
 
             try {
                 const issuanceId = document.getElementById('issuanceId').textContent;
-                const response = await fetch('/api/issued-credential', {
+                const response = await fetch('/api/fetch-credential', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
