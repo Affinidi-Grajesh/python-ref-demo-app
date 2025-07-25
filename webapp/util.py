@@ -143,3 +143,21 @@ def get_credentials(issuance_id):
     except Exception as e:
         logging.error(f"Error fetching credentials: {e}")
         return {"success": False, "error": str(e)}
+
+def revoke_credential(issuance_id):
+    try:
+        if not issuance_id:
+            return {"success": False, "error": "No issuanceId provided"}
+
+        print("Revoking credential for issuanceId:", issuance_id)
+        configuration = affinidi_tdk_credential_issuance_client.Configuration()
+        configuration.api_key["ProjectTokenAuth"] = pst()
+        with affinidi_tdk_credential_issuance_client.ApiClient(configuration) as api_client:
+            api_instance = affinidi_tdk_credential_issuance_client.CredentialsApi(api_client)
+            projectId = project_id
+            response = api_instance.revoke_credential(projectId, issuance_id)
+            print("response", response)
+            return response.to_dict()
+    except Exception as e:
+        logging.error(f"Error revoking credential: {e}")
+        return {"success": False, "error": str(e)}

@@ -8,5 +8,6 @@ media/
 static/
 .env
 venv/
-
+token/
+pst_response.jwt
 __init__.py
