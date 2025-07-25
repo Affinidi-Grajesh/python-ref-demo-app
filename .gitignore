@@ -1,0 +1,12 @@
+# Django ignores
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+static/
+.env/
+venv/
+
+__init__.py
