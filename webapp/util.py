@@ -144,18 +144,40 @@ def get_credentials(issuance_id):
         logging.error(f"Error fetching credentials: {e}")
         return {"success": False, "error": str(e)}
 
-def revoke_credential(issuance_id):
-    try:
-        if not issuance_id:
-            return {"success": False, "error": "No issuanceId provided"}
 
-        print("Revoking credential for issuanceId:", issuance_id)
+def listIssuanceDataRecords():
+    try:
         configuration = affinidi_tdk_credential_issuance_client.Configuration()
         configuration.api_key["ProjectTokenAuth"] = pst()
         with affinidi_tdk_credential_issuance_client.ApiClient(configuration) as api_client:
-            api_instance = affinidi_tdk_credential_issuance_client.CredentialsApi(api_client)
-            projectId = project_id
-            response = api_instance.revoke_credential(projectId, issuance_id)
+            api_instance = affinidi_tdk_credential_issuance_client.DefaultApi(api_client)
+            response = api_instance.list_issuance_data_records(project_id, configuration_id)
+            return response.to_dict()
+    except Exception as e:
+        logging.error(f"Error listing issuance data records: {e}")
+        return {"success": False, "error": str(e)}
+
+
+def revoke_credential_util(revoke_credential_input):
+    try:
+        if not revoke_credential_input:
+            return {"success": False, "error": "No issuanceId provided"}
+
+        print("Revoking credential for issuanceId:", revoke_credential_input)
+        configuration = affinidi_tdk_credential_issuance_client.Configuration()
+        configuration.api_key["ProjectTokenAuth"] = pst()
+        with affinidi_tdk_credential_issuance_client.ApiClient(configuration) as api_client:
+            api_instance = affinidi_tdk_credential_issuance_client.DefaultApi(
+                api_client
+            )
+
+            response = api_instance.change_credential_status(
+                project_id,
+                configuration_id,
+                change_credential_status_input=affinidi_tdk_credential_issuance_client.ChangeCredentialStatusInput.from_dict(
+                    revoke_credential_input
+                ),
+            )
             print("response", response)
             return response.to_dict()
     except Exception as e:
