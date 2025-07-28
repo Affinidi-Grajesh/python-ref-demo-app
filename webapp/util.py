@@ -4,7 +4,7 @@ import affinidi_tdk_credential_issuance_client
 import os
 import jwt
 import time
-
+import affinidi_tdk_credential_verification_client
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -163,7 +163,6 @@ def revoke_credential_util(revoke_credential_input):
         if not revoke_credential_input:
             return {"success": False, "error": "No issuanceId provided"}
 
-        print("Revoking credential for issuanceId:", revoke_credential_input)
         configuration = affinidi_tdk_credential_issuance_client.Configuration()
         configuration.api_key["ProjectTokenAuth"] = pst()
         with affinidi_tdk_credential_issuance_client.ApiClient(configuration) as api_client:
@@ -178,8 +177,27 @@ def revoke_credential_util(revoke_credential_input):
                     revoke_credential_input
                 ),
             )
-            print("response", response)
             return response.to_dict()
     except Exception as e:
         logging.error(f"Error revoking credential: {e}")
+        return {"success": False, "error": str(e)}
+
+def verify_credential_util(verify_credential_input):
+    try:
+        if not verify_credential_input:
+            return {"success": False, "error": "No Credential provided to verify"}
+
+        print("Verifying credential for issuanceId:", verify_credential_input)
+        configuration = affinidi_tdk_credential_verification_client.Configuration()
+        configuration.api_key["ProjectTokenAuth"] = pst()
+        with affinidi_tdk_credential_verification_client.ApiClient(configuration) as api_client:
+            api_instance = affinidi_tdk_credential_verification_client.DefaultApi(api_client)
+            response = api_instance.verify_credentials(
+                verify_credential_input=affinidi_tdk_credential_verification_client.VerifyCredentialInput.from_dict(
+                    verify_credential_input
+                ),
+            )
+            return response.to_dict()
+    except Exception as e:
+        logging.error(f"Error verifying credential: {e}")
         return {"success": False, "error": str(e)}

@@ -3,7 +3,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from .services import build_credentials_request
 import logging
-from .util import get_credentials, pst, startIssuance, listIssuanceDataRecords, revoke_credential_util
+from .util import get_credentials, pst, startIssuance, listIssuanceDataRecords, revoke_credential_util, verify_credential_util
 
 logger = logging.getLogger(__name__)
 
@@ -192,16 +192,43 @@ def verify_credential(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            credentialId = data.get("credentialId")
-            if not credentialId:
-                return JsonResponse({"error": "credentialId is required"}, status=400)
-            return JsonResponse(
-                {
-                    "credentialId": credentialId,
-                    "status": "Credential verified successfully",
-                },
-                status=200,
-            )
+            verifiable_credentials = data.get("verifiableCredentials")
+
+            # --- Validation ---
+            if not verifiable_credentials:
+                return JsonResponse(
+                    {"error": "verifiableCredentials is required"}, status=400
+                )
+            # if not isinstance(verifiable_credentials, list):
+            #     return JsonResponse(
+            #         {"error": "verifiableCredentials must be an array"}, status=400
+            #     )
+            credentials_to_verify_payload = {
+                "verifiableCredentials": [verifiable_credentials]
+            }
+
+            logger.info(f"Verifying credentials: {credentials_to_verify_payload}")
+
+            # --- Call Affinidi service  ---
+            verified_response = verify_credential_util(credentials_to_verify_payload)
+
+            logger.info(f"Verification response received: {verified_response}")
+
+            # --- Return successful response (assuming verify_credential_util handles its own errors or raises exceptions) ---
+            return JsonResponse(verified_response, status=200)
+
         except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON format"}, status=400)
-    return JsonResponse({"error": "Invalid request method."}, status=400)
+            logger.error("Invalid JSON format in request body.", exc_info=True)
+            return JsonResponse({"message": "Invalid JSON format"}, status=400)
+        except ValueError as e:  # Catching specific validation errors from your service
+            logger.error(f"Validation failed: {e}", exc_info=True)
+            return JsonResponse(
+                {"message": f"Invalid input provided: {e}"}, status=422
+            )  # Aligned with 422
+        except Exception as e:
+            logger.error(f"Verification failed: {e}", exc_info=True)
+            return JsonResponse({"message": f"Verification failed: {e}"}, 500)
+
+    return JsonResponse(
+        {"error": "Invalid request method. Only POST is allowed."}, status=405
+    )
