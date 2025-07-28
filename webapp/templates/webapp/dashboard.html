@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="utf-8">
-    <title>Django Demo App</title>
+    <title>Python Dashboard</title>
     <style>
-        /* Intuitive Design Styles - Consistent with CIS Page & EXPLORE LINKS BUTTONS ONLY */
+        /* Intuitive Design Styles - Consistent with CIS & Demo App Pages */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #eef2f7;
@@ -77,17 +76,18 @@
             border-width: 1px;
         }
 
+        .alert-success {
+            background-color: #e6f9ec;
+            color: #155724;
+            border-color: #bef2c4;
+        }
+
         .alert-danger {
             background-color: #fdecea;
             color: #991b1b;
             border-color: #fcc2c3;
         }
 
-        .alert-success {
-            background-color: #e6f9ec;
-            color: #155724;
-            border-color: #bef2c4;
-        }
 
         .affinidi-login-div {
             margin-bottom: 20px;
@@ -142,56 +142,137 @@
         }
 
 
-        .explore-links {
-            margin-top: 20px;
+        .dashboard-alert-success {
+            background-color: #e6f9ec;
+            /* Light green background for success - consistent */
+            color: #155724;
+            /* Dark green text for success - consistent */
+            border-color: #bef2c4;
+            /* Green border - consistent */
+            padding: 20px;
+            /* Consistent padding with other alerts */
+            border-radius: 8px;
+            /* Consistent rounded corners with other alerts */
+            margin-bottom: 20px;
+            /* Consistent margin with other alerts */
+            text-align: center;
+            /* Keep text centered */
+            font-weight: 500;
+            /* Consistent font weight */
+            border-width: 1px;
+            /* Consistent border width */
         }
 
-        .explore-links a {
-            /* Apply CIS Button Styles to Explore Links */
+
+        .logout-button {
+            /* Button style for Logout - similar to Explore Links buttons */
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 15px 30px;
-            /* Match CIS button padding */
-            background-color: #0694a2;
-            /* Teal button color - CIS style */
+            background-color: #6b7280;
+            /* Grey color for Logout button */
             color: #ffffff;
-            /* White text - CIS style */
             text-decoration: none;
             border-radius: 8px;
-            /* Rounded corners - CIS style */
             border: none;
             cursor: pointer;
             font-size: 1.1rem;
-            /* Match CIS button font size */
             font-weight: 600;
-            /* Match CIS button font weight */
             transition: background-color 0.3s ease, transform 0.2s ease;
-            /* Hover/active effects */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-            /* Subtle shadow - CIS style */
+            margin-top: 20px;
+            /* Add some top margin to separate from welcome text */
+            width: auto;
+            /* Adjust width to content */
+            display: inline-block;
+            /* To allow width: auto to work if needed */
+        }
+
+        .logout-button:hover {
+            background-color: #4a5568;
+            /* Darker grey on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-button:active {
+            background-color: #374151;
+            /* Even darker grey on active */
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .explore-links {
+            margin-top: 30px;
+            /* Add margin above explore links section */
+        }
+
+        .explore-links a {
+            /* Button style for Explore Links - using iota-button style for consistency */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 30px;
+            background-color: #0694a2;
+            /* Teal color for buttons */
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
             margin-bottom: 15px;
-            /* Keep spacing between links */
-            text-align: center;
-            /* Ensure text is centered */
+            /* Spacing between links */
         }
 
         .explore-links a:hover {
             background-color: #047a85;
-            /* Darker teal on hover - CIS style */
+            /* Darker teal on hover */
             transform: translateY(-2px);
-            /* Slight lift on hover - CIS style */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            /* Increased shadow on hover - CIS style */
         }
 
         .explore-links a:active {
             background-color: #03606b;
-            /* Even darker teal on active - CIS style */
+            /* Even darker teal on active */
             transform: translateY(0);
-            /* Reset transform on active - CIS style */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-            /* Reset shadow on active - CIS style */
+        }
+
+        /* Enhanced Home Button Style */
+        .home-button-enhanced {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 30px;
+            background-color: #6b7280;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .home-button-enhanced:hover {
+            background-color: #4a5568;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .home-button-enhanced:active {
+            background-color: #374151;
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -200,51 +281,23 @@
 <body>
     <div class="container">
         <div class="header-body">
-            <h1>Python Django Demo App</h1>
-        </div>
-
-           <div class="card-body">
-            <h2 class="h4 mb-1">Sign in</h2>
-            <hr class="mt-2">
-            {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
-            {% endif %}
-            {% if success %}
-            <div class="alert alert-success">
-                {{ success }}
-            </div>
-            {% endif %}
-            <div class="alert alert-danger">
-                <strong>Note:</strong> This is a demo app. Do not use it for production purposes.
-            </div>
-            <div class="affinidi-login-div">
-                <a class="affinidi-login-dark-l" href="/login">
-                    Affinidi Login
-                </a>
-            </div>
+            <h1>Dashboard</h1>
+            <a href="/" class="home-button-enhanced">Home</a>
         </div>
 
         <div class="card-body">
-            <h2 class="h4 mb-1">Explore More</h2>
-            <hr class="mt-2">
-            <div class="explore-links">
-                <a href="/cis">
-                    Affinidi Credential Issuance
-                </a>
-                <a href="/iota">
-                    Affinidi Iota Framework
-                </a>
-                <a href="/verify">
-                    Verify VC
-                </a>
-                <a href="/revoke">
-                    Revoke Credential
-                </a>
-                <a href="/idv">
-                    Identity Verification
-                </a>
+            <div class="dashboard-alert-success">
+                Congratulations, your login was successful!
             </div>
+            <h3>Welcome <i>{{ session.email }}</i></h3>
         </div>
+
+        <div class="card-body">
+            <a class="logout-button" href="/logout">
+                Logout
+            </a>
+        </div>
+
     </div>
 </body>
 

@@ -16,4 +16,8 @@ urlpatterns = [
     path("api/verify-credential", api.verify_credential, name="verify_credential"),
     path("api/iota-start", api.iota_start, name="iota_start"),
     path("api/iota-complete", api.iota_complete, name="iota_complete"),
+    path("login", views.login, name="login"),
+    path("logout", views.logout, name="logout"),
+    path("callback", views.callback, name="callback"),
+    path("dashboard", views.dashboard, name="dashboard"),
 ]
