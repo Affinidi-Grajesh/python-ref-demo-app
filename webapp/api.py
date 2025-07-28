@@ -3,8 +3,13 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from .services import build_credentials_request
 import logging
-from .util import get_credentials, pst, startIssuance, listIssuanceDataRecords, revoke_credential_util, verify_credential_util
+from .util import get_credentials, pst, startIssuance, listIssuanceDataRecords, revoke_credential_util, verify_credential_util, iota_start_util, iota_completed_util
+import uuid
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+vault_url = os.environ.get("VAULT_URL", "")
 logger = logging.getLogger(__name__)
 
 
@@ -228,6 +233,160 @@ def verify_credential(request):
         except Exception as e:
             logger.error(f"Verification failed: {e}", exc_info=True)
             return JsonResponse({"message": f"Verification failed: {e}"}, 500)
+
+    return JsonResponse(
+        {"error": "Invalid request method. Only POST is allowed."}, status=405
+    )
+
+
+@csrf_exempt
+def iota_start(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+
+            # --- Extract and validate input ---
+            configuration_id = data.get("configurationId")
+            query_id = data.get("queryId")
+            redirect_uri = data.get("redirectUri")
+            nonce = data.get("nonce")
+
+            # Basic validation for required fields
+            if not configuration_id:
+                return JsonResponse(
+                    {"error": "configurationId is required"}, status=400
+                )
+            if not query_id:
+                return JsonResponse({"error": "queryId is required"}, status=400)
+            if not redirect_uri:
+                return JsonResponse({"error": "redirectUri is required"}, status=400)
+            # nonce can be optional based on your PHP's validation, but if it's required for Affinidi, uncomment:
+            # if not nonce:
+            #     return JsonResponse({"error": "nonce is required"}, status=400)
+
+            # --- Prepare payload for Affinidi service  ---
+            correlation_id = str(
+                uuid.uuid4()
+            )  # Generate UUID, equivalent to Uuid::uuid4()->toString()
+
+            iota_start_payload = {
+                "configurationId": configuration_id,
+                "mode": "redirect",
+                "queryId": query_id,
+                "correlationId": correlation_id,
+                "nonce": nonce,  # Pass nonce even if empty/None; Affinidi API might handle it
+                "redirectUri": redirect_uri,
+            }
+
+            logger.info(
+                f"Calling AffinidiServices::IotaStart with payload: {iota_start_payload}"
+            )
+
+            # --- Call Affinidi service  ---
+            # Assuming iota_start_util handles its own errors and raises exceptions for failures
+            affinidi_response = iota_start_util(iota_start_payload)
+
+            logger.info(f"Affinidi IotaStart response received: {affinidi_response}")
+
+            # --- Process response  ---
+            if "data" not in affinidi_response:
+                # If Affinidi returns an error directly at the top level, return it
+                logger.error(
+                    f'Affinidi IotaStart response missing "data" key: {affinidi_response}'
+                )
+                # You might want to return the whole response as an error if it contains an error structure
+                return JsonResponse(
+                    {
+                        "error": affinidi_response.get(
+                            "message", "Unexpected response from Affinidi IotaStart"
+                        )
+                    },
+                    status=500,
+                )
+
+            response_data = affinidi_response["data"]
+
+            # --- Construct final JSON response (aligned with PHP's $json_response) ---
+
+            json_response = {
+                "correlationId": response_data.get(
+                    "correlationId"
+                ),  # Use .get for robustness
+                "transactionId": response_data.get("transactionId"),
+                "vaultLink": f'{vault_url}/login?request={response_data.get("jwt")}',
+            }
+
+            logger.info(f"Successfully prepared IotaStart response: {json_response}")
+            return JsonResponse(json_response, status=200)
+
+        except json.JSONDecodeError:
+            logger.error("Invalid JSON format in request body.", exc_info=True)
+            return JsonResponse({"error": "Invalid JSON format"}, status=400)
+        except Exception as e:
+            logger.error(f"IotaStart failed: {e}", exc_info=True)
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse(
+        {"error": "Invalid request method. Only POST is allowed."}, status=405
+    )
+
+
+@csrf_exempt
+def iota_complete(request):
+    if (
+        request.method == "POST"
+    ):  # Assuming the callback is a POST request based on previous examples
+        try:
+            # The PHP example uses $request->input, which typically retrieves
+            # parameters from POST data or query parameters.
+            # For a callback, it could be JSON body or form-data.
+            # Let's assume JSON body for consistency with previous Django examples.
+            data = json.loads(request.body)
+
+            # --- Extract and validate input  ---
+            configuration_id = data.get("configurationId")
+            response_code = data.get("responseCode")
+            correlation_id = data.get("correlationId")
+            transaction_id = data.get("transactionId")
+
+            # Basic validation for required fields
+            if not configuration_id:
+                return JsonResponse(
+                    {"error": "configurationId is required"}, status=400
+                )
+            if not response_code:
+                return JsonResponse({"error": "responseCode is required"}, status=400)
+            if not correlation_id:
+                return JsonResponse({"error": "correlationId is required"}, status=400)
+            if not transaction_id:
+                return JsonResponse({"error": "transactionId is required"}, status=400)
+
+            # --- Prepare payload for Affinidi service ---
+            iota_callback_payload = {
+                "configurationId": configuration_id,
+                "responseCode": response_code,
+                "correlationId": correlation_id,
+                "transactionId": transaction_id,
+            }
+
+            logger.info(
+                f"Calling AffinidiServices::IotaCallback with payload: {iota_callback_payload}"
+            )
+
+            # --- Call Affinidi service (now named iota_callback_util for clarity) ---
+            # iota_callback_util should handle the actual API call and return the response
+            json_response = iota_completed_util(iota_callback_payload)
+
+            logger.info(f"Affinidi IotaCallback response received: {json_response}")
+
+            return JsonResponse(json_response, status=200)
+
+        except json.JSONDecodeError:
+            logger.error("Invalid JSON format in request body.", exc_info=True)
+            return JsonResponse({"error": "Invalid JSON format"}, status=400)
+        except Exception as e:
+            logger.error(f"IotaCallback failed: {e}", exc_info=True)
+            return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse(
         {"error": "Invalid request method. Only POST is allowed."}, status=405

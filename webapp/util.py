@@ -5,6 +5,7 @@ import os
 import jwt
 import time
 import affinidi_tdk_credential_verification_client
+import affinidi_tdk_iota_client
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -200,4 +201,41 @@ def verify_credential_util(verify_credential_input):
             return response.to_dict()
     except Exception as e:
         logging.error(f"Error verifying credential: {e}")
+        return {"success": False, "error": str(e)}
+
+def iota_start_util(iota_start_input):
+    try:
+        if not iota_start_input:
+            return {"success": False, "error": "No IOTA start input provided"}
+
+        print("Starting IOTA with input:", iota_start_input)
+        configuration = affinidi_tdk_iota_client.Configuration()
+        configuration.api_key["ProjectTokenAuth"] = pst()
+        with affinidi_tdk_iota_client.ApiClient(configuration) as api_client:
+            api_instance = affinidi_tdk_iota_client.IotaApi(api_client)
+            initiate_data_sharing_request_input = affinidi_tdk_iota_client.InitiateDataSharingRequestInput.from_dict(iota_start_input)
+
+            initiateDataSharingRequestResponse = api_instance.initiate_data_sharing_request(initiate_data_sharing_request_input)
+            return initiateDataSharingRequestResponse.to_dict()
+    except Exception as e:
+        logging.error(f"Error starting IOTA: {e}")
+        return {"success": False, "error": str(e)}
+
+def iota_completed_util(iota_completed_input):
+    try:
+        if not iota_completed_input:
+            return {"success": False, "error": "No IOTA completed input provided"}
+
+        print("Completing IOTA with input:", iota_completed_input)
+        configuration = affinidi_tdk_iota_client.Configuration()
+        configuration.api_key["ProjectTokenAuth"] = pst()
+        with affinidi_tdk_iota_client.ApiClient(configuration) as api_client:
+            api_instance = affinidi_tdk_iota_client.IotaApi(api_client)
+            fetch_iota_vp_response_input = affinidi_tdk_iota_client.FetchIOTAVPResponseInput.from_dict(iota_completed_input)
+            response = api_instance.fetch_iota_vp_response(fetch_iota_vp_response_input)
+            print("IOTA completed response:", response)
+
+            return response.to_dict()
+    except Exception as e:
+        logging.error(f"Error completing IOTA: {e}")
         return {"success": False, "error": str(e)}

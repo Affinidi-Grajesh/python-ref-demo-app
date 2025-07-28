@@ -360,7 +360,7 @@
 
         <div class="card-body">
             <div id="divRequest">
-                <button class="iota-button" id="iota-btn">Showcasing Selective Sharing Credentials</button>
+                <button class="iota-button" id="iota-btn">Showcasing Iota Sharing Credentials</button>
             </div>
             <div id="divMessage">
             </div>
@@ -370,7 +370,7 @@
 
     <script>
         const divMessage = document.getElementById('divMessage');
-        const responseCode = "{{ $response_code }}";
+        const responseCode = "{{ response_code }}";
         if (responseCode) {
             divMessage.textContent = "Get the response code from callback url";
 
@@ -510,8 +510,8 @@
             divMessage.textContent = "Initiating request";
 
             const nonce = crypto.randomUUID().slice(0, 10);
-            const configurationId = "{{ $config_id }}";
-            const queryId = "{{ $avvanz_query_id }}";
+            const configurationId = "{{ config_id }}";
+            const queryId = "{{ avvanz_query_id }}";
             const redirectUri = window.location.href;
 
             fetch('/api/iota-start', {
