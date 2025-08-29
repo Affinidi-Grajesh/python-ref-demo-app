@@ -481,32 +481,167 @@
         </div>
 
         <div class="card-body">
-            <div class="button-group" id="divRequest">
-                <button class="issue-credential-btn" data-type="personalInformation">
-                    <svg class="icon-personal"></svg> Personal Information
-                </button>
-                <button class="issue-credential-btn" data-type="address">
-                    <svg class="icon-address"></svg> Address Verification
-                </button>
-                <button class="issue-credential-btn" data-type="education">
-                    <svg class="icon-education"></svg> Education Verification
-                </button>
-                <button class="issue-credential-btn" data-type="employment">
-                    <svg class="icon-employment"></svg> Employment Verification
-                </button>
-                <button class="issue-credential-btn" data-type="full">
-                    <svg class="icon-employment"></svg> Digital Credential - Full
-                </button>
-                <button class="issue-credential-btn" data-type="partial">
-                    <svg class="icon-employment"></svg>Digital Credential - Partial
-                </button>
-                <button class="issue-credential-btn" data-type="batch-credentials">
-                    <svg class="icon-employment"></svg>Digital Credential - Batch
-                </button>
-                <button class="issue-credential-btn" data-type="revoke-credential">
-                    <svg class="icon-employment"></svg>Digital Credential - Revokeable
-                </button>
+            <div class="card-grid" id="divRequest">
+                <div class="credential-card">
+                    <div class="card-icon">
+                        <!-- User Icon -->
+                        <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><circle cx="16" cy="12" r="6" fill="#0694a2"/><rect x="6" y="22" width="20" height="8" rx="4" fill="#4a5568"/></svg>
+                    </div>
+                    <div class="card-title">Personal Information</div>
+                    <div class="card-options">
+                        <label><input class="form-check-input" type="checkbox" name="revocablePersonalInfo" value="true"> Revocable</label>
+                        <label><input class="form-check-input" type="checkbox" name="expiryPersonalInfo" value="true"> Expiry</label>
+                    </div>
+                    <button class="issue-credential-btn" data-type="personalInformation">Issue Credential</button>
+                </div>
+                <div class="credential-card">
+                    <div class="card-icon">
+                        <!-- Location/Address Icon -->
+                        <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><path d="M16 4a8 8 0 0 1 8 8c0 6-8 16-8 16S8 18 8 12a8 8 0 0 1 8-8zm0 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="#0694a2"/></svg>
+                    </div>
+                    <div class="card-title">Address Verification</div>
+                    <div class="card-options">
+                        <label><input class="form-check-input" type="checkbox" name="revocableAddress" value="true"> Revocable</label>
+                        <label><input class="form-check-input" type="checkbox" name="expiryAddress" value="true"> Expiry</label>
+                    </div>
+                    <button class="issue-credential-btn" data-type="address">Issue Credential</button>
+                </div>
+                <div class="credential-card">
+                    <div class="card-icon">
+                        <!-- Graduation Cap Icon -->
+                        <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><path d="M16 6l12 6-12 6-12-6 12-6zm0 14v6m-8-8v4c0 2.21 3.58 4 8 4s8-1.79 8-4v-4" stroke="#0694a2" stroke-width="2" fill="none"/></svg>
+                    </div>
+                    <div class="card-title">Education Verification</div>
+                    <div class="card-options">
+                        <label><input class="form-check-input" type="checkbox" name="revocableEducation" value="true"> Revocable</label>
+                        <label><input class="form-check-input" type="checkbox" name="expiryEducation" value="true"> Expiry</label>
+                    </div>
+                    <button class="issue-credential-btn" data-type="education">Issue Credential</button>
+                </div>
+                <div class="credential-card">
+                    <div class="card-icon">
+                        <!-- Briefcase Icon -->
+                        <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect x="6" y="12" width="20" height="14" rx="3" fill="#0694a2"/><rect x="12" y="8" width="8" height="4" rx="2" fill="#4a5568"/></svg>
+                    </div>
+                    <div class="card-title">Employment Verification</div>
+                    <div class="card-options">
+                        <label><input class="form-check-input" type="checkbox" name="revocableEmployment" value="true"> Revocable</label>
+                        <label><input class="form-check-input" type="checkbox" name="expiryEmployment" value="true"> Expiry</label>
+                    </div>
+                    <button class="issue-credential-btn" data-type="employment">Issue Credential</button>
+                </div>
+                <div class="credential-card">
+                    <div class="card-icon">
+                        <!-- Certificate Icon -->
+                        <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="4" fill="#0694a2"/><circle cx="16" cy="16" r="4" fill="#fff"/><path d="M16 20v4m0 0l2-2m-2 2l-2-2" stroke="#4a5568" stroke-width="2"/></svg>
+                    </div>
+                    <div class="card-title">Digital Credential - Full</div>
+                    <div class="card-options">
+                        <label><input class="form-check-input" type="checkbox" name="revocableFull" value="true"> Revocable</label>
+                        <label><input class="form-check-input" type="checkbox" name="expiryFull" value="true"> Expiry</label>
+                    </div>
+                    <button class="issue-credential-btn" data-type="full">Issue Credential</button>
+                </div>
+                <div class="credential-card">
+                    <div class="card-icon">
+                        <!-- Pie Chart Icon -->
+                        <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="#0694a2"/><path d="M16 16V4a12 12 0 0 1 12 12h-12z" fill="#4a5568"/></svg>
+                    </div>
+                    <div class="card-title">Digital Credential - Partial</div>
+                    <div class="card-options">
+                        <label><input class="form-check-input" type="checkbox" name="revocablePartial" value="true"> Revocable</label>
+                        <label><input class="form-check-input" type="checkbox" name="expiryPartial" value="true"> Expiry</label>
+                    </div>
+                    <button class="issue-credential-btn" data-type="partial">Issue Credential</button>
+                </div>
+                <div class="credential-card">
+                    <div class="card-icon">
+                        <!-- Stack Icon -->
+                        <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect x="6" y="20" width="20" height="4" rx="2" fill="#0694a2"/><rect x="8" y="14" width="16" height="4" rx="2" fill="#4a5568"/><rect x="10" y="8" width="12" height="4" rx="2" fill="#0694a2"/></svg>
+                    </div>
+                    <div class="card-title">Digital Credential - Batch</div>
+                    <div class="card-options">
+                        <label><input class="form-check-input" type="checkbox" name="revocableBatch" value="true"> Revocable</label>
+                        <label><input class="form-check-input" type="checkbox" name="expiryBatch" value="true"> Expiry</label>
+                    </div>
+                    <button class="issue-credential-btn" data-type="batch-credentials">Issue Credential</button>
+                </div>
+                <div class="credential-card">
+                    <div class="card-icon">
+                        <!-- Shield/Lock Icon -->
+                        <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><path d="M16 4l10 4v8c0 7-10 12-10 12S6 23 6 16V8l10-4z" fill="#0694a2"/><rect x="12" y="14" width="8" height="6" rx="3" fill="#fff"/></svg>
+                    </div>
+                    <div class="card-title">Digital Credential - Revokeable</div>
+                    <div class="card-options">
+                        <label><input class="form-check-input" type="checkbox" name="revocableRevokeable" value="true"> Revocable</label>
+                        <label><input class="form-check-input" type="checkbox" name="expiryRevokeable" value="true"> Expiry</label>
+                    </div>
+                    <button class="issue-credential-btn" data-type="revoke-credential">Issue Credential</button>
+                </div>
             </div>
+        <style>
+            .card-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 28px;
+                margin-bottom: 30px;
+            }
+            .credential-card {
+                background: #fff;
+                border-radius: 14px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+                padding: 28px 22px 22px 22px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                transition: box-shadow 0.2s;
+            }
+            .credential-card:hover {
+                box-shadow: 0 6px 18px rgba(0,0,0,0.13);
+            }
+            .card-icon {
+                margin-bottom: 12px;
+                font-size: 2.2rem;
+            }
+            .card-title {
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: #374151;
+                margin-bottom: 16px;
+                text-align: center;
+            }
+            .card-options {
+                display: flex;
+                gap: 18px;
+                margin-bottom: 18px;
+            }
+            .card-options label {
+                font-size: 1rem;
+                color: #4a5568;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .issue-credential-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 1.08rem;
+                font-weight: 600;
+                padding: 13px 0;
+                margin-top: 6px;
+                border-radius: 8px;
+                background-color: #0694a2;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+                transition: background 0.2s, box-shadow 0.2s;
+            }
+            .issue-credential-btn:hover {
+                background-color: #047a85;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.13);
+            }
+        </style>
         </div>
 
 
@@ -576,12 +711,7 @@
                         <p class="webhook-response-detail" id="webhookMessage">Credential Status: Waiting to be checked.</p>
                         <div id="webhookResult"></div>
                     </div>
-                    <div id="vcDetailsSection" style="display: none;">
-                        <hr class="mt-2">
-                        <h4 class="webhook-response-title">Verifiable Credential Details</h4>
-                        <div id="vcDetails">
-                        </div>
-                    </div>
+
                 </div>
                 <div style="text-align: center;">
                     <button id="checkStatusButton" class="action-button status-check-button">Check Credential Status</button>
@@ -602,72 +732,89 @@
 
         async function issueCredentialHandler() {
             const type = this.getAttribute('data-type');
-            issueCredential(type);
+            // Find the parent card for this button
+            const card = this.closest('.credential-card');
+            // Find the checkboxes inside this card
+            let revocable = false;
+            let expiry = false;
+            if (card) {
+                // Find the first checkbox (revocable)
+                const revocableCheckbox = card.querySelector('input[type="checkbox"][name^="revocable"]');
+                if (revocableCheckbox) revocable = revocableCheckbox.checked;
+                // Find the second checkbox (expiry)
+                const expiryCheckbox = card.querySelector('input[type="checkbox"][name^="expiry"]');
+                if (expiryCheckbox) expiry = expiryCheckbox.checked;
+            }
+            issueCredential(type, revocable, expiry);
             document.querySelectorAll('.issue-credential-btn').forEach(btn => btn.style.display = 'none');
         }
 
 
-        function issueCredential(type) {
+        function issueCredential(type, revocable, expiry) {
             const divResponseError = document.getElementById('divResponseError');
             divResponseError.style.display = '';
             divResponseError.querySelector('.alert-danger').textContent = 'Processing Issuance for ' + type + ' VC, Please wait...';
 
             fetch('/api/issue-credential', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        credentialType: type
-                    })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    credentialType: type,
+                    revocable: revocable,
+                    expiry: expiry
                 })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Success:', data);
-                    if (data.credentialOfferUri) {
-                        const divRequest = document.getElementById('divRequest');
-                        const divResponse = document.getElementById('divResponse');
-                        divRequest.style.display = 'none';
-                        divResponse.style.display = '';
-                        document.getElementById('credentialOfferUri').textContent = data.credentialOfferUri;
-                        document.getElementById('txCode').textContent = data.txCode;
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                if (data.credentialOfferUri) {
+                    const divRequest = document.getElementById('divRequest');
+                    const divResponse = document.getElementById('divResponse');
+                    divRequest.style.display = 'none';
+                    divResponse.style.display = '';
+                    document.getElementById('credentialOfferUri').textContent = data.credentialOfferUri;
+                    document.getElementById('txCode').textContent = data.txCode;
 
-                        document.getElementById('vaultLink').href = data.vaultLink + "&return_uri=https%3A%2F%2Fpreferably-in-teal.ngrok-free.app%2Fclaim-completed";
-                        divResponseError.style.display = 'none';
+                    document.getElementById('vaultLink').href = data.vaultLink + "&return_uri=https%3A%2F%2Fpreferably-in-teal.ngrok-free.app%2Fclaim-completed";
+                    divResponseError.style.display = 'none';
 
-                        // SET ISSUANCE ID HERE:
-                        document.getElementById('issuanceId').textContent = data.issuanceId; // Assuming your API response returns "issuanceId"
+                    // SET ISSUANCE ID HERE:
+                    document.getElementById('issuanceId').textContent = data.issuanceId; // Assuming your API response returns "issuanceId"
 
-                        // Store state in session storage
-                        sessionStorage.setItem('cisState', JSON.stringify({
-                            offerGenerated: true,
-                            credentialOfferUri: data.credentialOfferUri,
-                            txCode: data.txCode,
-                            issuanceId: data.issuanceId,
-                            credentialType: type // Store the credential type
-                        }));
+                    // Store state in session storage
+                    sessionStorage.setItem('cisState', JSON.stringify({
+                        offerGenerated: true,
+                        credentialOfferUri: data.credentialOfferUri,
+                        txCode: data.txCode,
+                        issuanceId: data.issuanceId,
+                        credentialType: type,
+                        revocable: revocable,
+                        expiry: expiry
+                    }));
 
-                        // Show webhook status section (inside offer ready card now)
-                        const webhookStatus = document.getElementById('webhookStatus');
-                        webhookStatus.style.display = 'block';
-                        document.getElementById('webhookMessage').textContent = 'Credential Status: Waiting to be checked.'; // Initial message
-                        document.getElementById('webhookResult').innerHTML = ''; // Clear previous results
+                    // Show webhook status section (inside offer ready card now)
+                    const webhookStatus = document.getElementById('webhookStatus');
+                    webhookStatus.style.display = 'block';
+                    document.getElementById('webhookMessage').textContent = 'Credential Status: Waiting to be checked.'; // Initial message
+                    document.getElementById('webhookResult').innerHTML = ''; // Clear previous results
 
-                    } else {
-                        const divRequest = document.getElementById('divRequest');
-                        divRequest.style.display = '';
-                        divResponseError.querySelector('.alert-danger').textContent = 'Failed to issue credential: ' + data.message;
-                        document.querySelectorAll('.issue-credential-btn').forEach(btn => btn.style.display = '');
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
+                } else {
                     const divRequest = document.getElementById('divRequest');
                     divRequest.style.display = '';
-                    divResponseError.querySelector('.alert-danger').textContent = 'Failed to issue credential: ' + error.message;
+                    divResponseError.querySelector('.alert-danger').textContent = 'Failed to issue credential: ' + data.message;
                     document.querySelectorAll('.issue-credential-btn').forEach(btn => btn.style.display = '');
-                });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                const divRequest = document.getElementById('divRequest');
+                divRequest.style.display = '';
+                divResponseError.querySelector('.alert-danger').textContent = 'Failed to issue credential: ' + error.message;
+                document.querySelectorAll('.issue-credential-btn').forEach(btn => btn.style.display = '');
+            });
         }
 
 
@@ -744,78 +891,6 @@
                     }
                     webhookResultDiv.appendChild(webhookInfoContainer);
 
-                    // NEW: Process and display Verifiable Credential Details if available
-                    if (statusData.credential) { // Check if 'credential' field exists
-                        const vcDetailsSection = document.getElementById('vcDetailsSection');
-                        vcDetailsSection.style.display = 'block'; // Show the VC details section
-                        const vcDetailsDiv = document.getElementById('vcDetails');
-                        vcDetailsDiv.innerHTML = ''; // Clear any previous VC details
-
-                        // Function to create and append VC detail cards (similar to Iota page)
-                        function addVCCard(vcData) {
-                            const vcCard = document.createElement('div');
-                            vcCard.className = 'offer-ready-card'; // Reusing card style for VC details
-
-                            const vcHeader = document.createElement('div');
-                            vcHeader.className = 'offer-ready-header';
-                            const vcIcon = document.createElement('svg'); // You might want to use specific icons per VC type
-                            vcIcon.className = 'offer-ready-icon';
-                            vcIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.5 9.75a.75.75 0 0 1 1.5 0v2.25a.75.75 0 0 1-1.5 0V12zm1.5-4.5a.75.75 0 0 1 .75.75h.008a.75.75 0 0 1-.75.75H12a.75.75 0 0 1-.75-.75V7.5a.75.75 0 0 1 .75-.75h.008z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M12 17.25a5.25 5.25 0 1 0 0-10.5 5.25 5.25 0 0 0 0 10.5zm0 1.5a6.75 6.75 0 1 1 0-13.5 6.75 0 0 1 0 13.5z" clip-rule="evenodd" /></svg>`; // Reusing offer-ready icon for now
-                            const vcTitle = document.createElement('h4');
-                            vcTitle.className = 'offer-ready-title';
-                            vcTitle.textContent = 'Verifiable Credential'; // Generic title, can be improved based on VC data
-                            vcHeader.appendChild(vcIcon);
-                            vcHeader.appendChild(vcTitle);
-                            vcCard.appendChild(vcHeader);
-
-                            const vcBody = document.createElement('div');
-                            vcBody.className = 'offer-ready-body';
-                            const vcInfo = document.createElement('div');
-                            vcInfo.className = 'offer-info';
-
-                            // Function to add VC info items (label-value pairs)
-                            function addVCInfoItem(label, value) {
-                                const infoItem = document.createElement('div');
-                                infoItem.className = 'offer-info-item';
-                                const infoLabel = document.createElement('span');
-                                infoLabel.className = 'offer-info-label';
-                                infoLabel.textContent = label + ':';
-                                const infoValue = document.createElement('p');
-                                infoValue.className = 'offer-info-value';
-
-                                if (typeof value === 'object' && value !== null) {
-                                    infoValue.textContent = JSON.stringify(value, null, 2);
-                                    infoValue.style.whiteSpace = 'pre-wrap';
-                                    infoValue.style.fontFamily = 'monospace';
-                                    infoValue.style.fontSize = '0.9rem';
-                                } else {
-                                    infoValue.textContent = value;
-                                }
-
-                                infoItem.appendChild(infoLabel);
-                                infoItem.appendChild(infoValue);
-                                vcInfo.appendChild(infoItem);
-                            }
-
-                            // Assuming vcData is an object with key-value pairs for VC details
-                            for (const vcKey in vcData) {
-                                if (vcData.hasOwnProperty(vcKey)) {
-                                    addVCInfoItem(vcKey, vcData[vcKey]);
-                                }
-                            }
-                            vcBody.appendChild(vcInfo);
-                            vcCard.appendChild(vcBody);
-                            vcDetailsDiv.appendChild(vcCard);
-                        }
-
-
-                        // Check if statusData.credential is an array or a single object
-                        if (Array.isArray(statusData.credential)) {
-                            statusData.credential.forEach(vc => addVCCard(vc)); // If array, loop and add cards
-                        } else if (typeof statusData.credential === 'object' && statusData.credential !== null) {
-                            addVCCard(statusData.credential); // If single object, add one card
-                        }
-                    }
 
 
                 } else {
