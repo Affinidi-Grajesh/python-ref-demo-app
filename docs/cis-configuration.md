@@ -50,12 +50,6 @@ Schema 4 :
 - _JSON Schema URL_ as `https://schema.affinidi.io/TEducationVerificationV1R0.json`
 - _JSDON-LD Context URL_ = `https://schema.affinidi.io/TEducationVerificationV1R0.jsonld`
 
-Schema 5 :
-
-- _Schema_ as `Manual Input`,
-- _Credential Type ID_ as `DigitalCredential`
-- _JSON Schema URL_ as `https://schema.affinidi.io/personalInfoV1R0.json`
-- _JSDON-LD Context URL_ = `https://schema.affinidi.io/personalInfoV1R0.jsonld`
 
 Sample Configuration
 ![alt text](./cis-image/cis-config.png)

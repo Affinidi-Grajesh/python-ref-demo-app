@@ -23,6 +23,9 @@ def issue_credential(request):
         try:
             data = json.loads(request.body)
             type_id = data.get("credentialType")
+            expiry = data.get("expiry", False)
+            revocable = data.get("revocable", False)
+
             if not type_id:
                 return JsonResponse({"error": "typeId is required"}, status=400)
 
@@ -37,7 +40,17 @@ def issue_credential(request):
                     {"error": "Missing credentialTypeId or credentialData"}, status=400
                 )
 
-            result = startIssuance(credentials_request[0])
+            for credential in credentials_request:
+                if expiry:
+                    credential["metaData"] = {
+                        "expirationDate": "2027-09-01T00:00:00.000Z"
+                    }
+                if revocable:
+                    credential["statusListDetails"] = [
+                        {"purpose": "REVOCABLE", "standard": "RevocationList2020"}
+                    ]
+
+            result = startIssuance(credentials_request)
             return JsonResponse(result, safe=False)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)

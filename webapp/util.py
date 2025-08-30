@@ -89,9 +89,9 @@ def pst():
     return projectScopedToken
 
 
-def startIssuance(payload_for_issuance_api):
+def startIssuance(payloads_for_issuance_api):
     try:
-        if not payload_for_issuance_api:
+        if not payloads_for_issuance_api:
             return {"success": False, "error": "No credentials request provided"}
         configuration = affinidi_tdk_credential_issuance_client.Configuration()
         configuration.api_key["ProjectTokenAuth"] = pst()
@@ -102,7 +102,7 @@ def startIssuance(payload_for_issuance_api):
                 api_client
             )
             projectId = project_id
-            request_json = {"data": [payload_for_issuance_api], "claimMode": "TX_CODE"}
+            request_json = {"data": payloads_for_issuance_api, "claimMode": "TX_CODE"}
             print("request_json", request_json)
 
             start_issuance_input = (
