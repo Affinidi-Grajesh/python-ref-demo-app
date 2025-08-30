@@ -359,6 +359,14 @@
             <div class="card-grid" id="divRequest">
                 <div class="credential-card">
                     <div class="card-icon">
+                        <!-- Driving License Icon -->
+                        <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect x="6" y="12" width="20" height="14" rx="3" fill="#0694a2"/><rect x="12" y="8" width="8" height="4" rx="2" fill="#4a5568"/></svg>
+                    </div>
+                    <div class="card-title">Driving License Verification</div>
+                    <button class="iota-button" id="dl-btn">Initiate Verification</button>
+                </div>
+                <div class="credential-card">
+                    <div class="card-icon">
                         <!-- Passport Icon -->
                         <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="4" fill="#0694a2"/><circle cx="16" cy="16" r="4" fill="#fff"/><path d="M16 20v4m0 0l2-2m-2 2l-2-2" stroke="#4a5568" stroke-width="2"/></svg>
                     </div>
@@ -367,19 +375,11 @@
                 </div>
                 <div class="credential-card">
                     <div class="card-icon">
-                        <!-- Driving License Icon -->
-                        <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect x="6" y="12" width="20" height="14" rx="3" fill="#0694a2"/><rect x="12" y="8" width="8" height="4" rx="2" fill="#4a5568"/></svg>
-                    </div>
-                    <div class="card-title">Driving License Verification</div>
-                    <button class="iota-button" id="license-btn">Initiate Verification</button>
-                </div>
-                <div class="credential-card">
-                    <div class="card-icon">
-                        <!-- National ID Icon -->
+                        <!-- Any Document Icon (reuse National ID icon) -->
                         <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="#0694a2"/><path d="M16 16V4a12 12 0 0 1 12 12h-12z" fill="#4a5568"/></svg>
                     </div>
-                    <div class="card-title">National ID Verification</div>
-                    <button class="iota-button" id="nationalid-btn">Initiate Verification</button>
+                    <div class="card-title">Any Document Verification</div>
+                    <button class="iota-button" id="anydoc-btn">Initiate Verification</button>
                 </div>
             </div>
             <div id="divMessage"></div>
@@ -554,56 +554,66 @@
 
         }
 
-        document.getElementById('iota-btn').addEventListener('click', function() {
+        // Button configuration mapping for new design
+        const buttonConfigs = [
+            { id: 'dl-btn', queryId: "{{ query_id_dl }}", label: 'Driving License Verification' },
+            { id: 'passport-btn', queryId: "{{ query_id_passport }}", label: 'Passport Verification' },
+            { id: 'anydoc-btn', queryId: "{{ query_id_anydoc }}", label: 'Any Document Verification' }
+        ];
 
-            divMessage.classList.remove('text-danger');
-            divMessage.textContent = "Initiating request";
+        buttonConfigs.forEach(cfg => {
+            const btn = document.getElementById(cfg.id);
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    divMessage.classList.remove('text-danger');
+                    divMessage.textContent = `Initiating request for ${cfg.label}`;
 
-            const nonce = crypto.randomUUID().slice(0, 10);
-            const configurationId = "{{ config_id_idv }}";
-            const queryId = "{{ avvanz_query_id_idv }}";
-            const redirectUri = window.location.href;
+                    const nonce = crypto.randomUUID().slice(0, 10);
+                    const configurationId = "{{ config_id_idv }}";
+                    const redirectUri = window.location.href;
 
-            fetch('/api/iota-start', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        configurationId,
-                        queryId,
-                        redirectUri,
-                        nonce,
+                    fetch('/api/iota-start', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            configurationId,
+                            queryId: cfg.queryId,
+                            redirectUri,
+                            nonce,
+                        })
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Success:', data);
-                    if (!data.correlationId || !data.transactionId) {
-                        divMessage.textContent = 'Failed to request credential: ' + '' + data.message;
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        if (!data.correlationId || !data.transactionId) {
+                            divMessage.textContent = 'Failed to request credential: ' + '' + data.message;
+                            divMessage.classList.add('text-danger');
+                            return;
+                        }
+                        divMessage.textContent = "Got the response from initiated request";
+
+                        const toStore = {
+                            nonce,
+                            queryId: cfg.queryId,
+                            configurationId,
+                            correlationId: data.correlationId,
+                            transactionId: data.transactionId,
+                        };
+
+                        localStorage.setItem("iotaRedirect", JSON.stringify(toStore));
+                        divMessage.textContent = "Redirecting to vault...";
+                        window.location.href = data.vaultLink;
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        divMessage.textContent = 'Failed iota request.';
                         divMessage.classList.add('text-danger');
-                        return;
-                    }
-                    divMessage.textContent = "Got the response from initiated request";
-
-                    const toStore = {
-                        nonce,
-                        queryId,
-                        configurationId,
-                        correlationId: data.correlationId,
-                        transactionId: data.transactionId,
-                    };
-
-                    localStorage.setItem("iotaRedirect", JSON.stringify(toStore));
-                    divMessage.textContent = "Redirecting to vault...";
-                    window.location.href = data.vaultLink;
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    divMessage.textContent = 'Failed iota request.';
-                    divMessage.classList.add('text-danger');
+                    });
                 });
+            }
         });
     </script>
 </body>

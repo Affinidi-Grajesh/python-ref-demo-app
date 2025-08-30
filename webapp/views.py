@@ -31,7 +31,9 @@ def cis(request):
 
 def idv(request):
     config_id_idv = os.environ.get("IOTA_CONFIG_ID_IDV", "")
-    avvanz_query_id_idv = os.environ.get("IOTA_AVVANZ_CREDENTIAL_QUERY_IDV", "")
+    query_id_dl = os.environ.get("IOTA_CREDENTIAL_QUERY_IDV_DL", "")
+    query_id_passport = os.environ.get("IOTA_CREDENTIAL_QUERY_IDV_PASSPORT", "")
+    query_id_anydoc = os.environ.get("IOTA_CREDENTIAL_QUERY_IDV_ANYDOC", "")
     response_code = request.GET.get("response_code", "")
 
     return render(
@@ -39,7 +41,9 @@ def idv(request):
         "webapp/idv.html",
         {
             "config_id_idv": config_id_idv,
-            "avvanz_query_id_idv": avvanz_query_id_idv,
+            "query_id_dl": query_id_dl,
+            "query_id_passport": query_id_passport,
+            "query_id_anydoc": query_id_anydoc,
             "response_code": response_code,
         },
     )
@@ -47,7 +51,13 @@ def idv(request):
 
 def iota(request):
     config_id = os.environ.get("IOTA_CONFIG_ID", "")
-    avvanz_query_id = os.environ.get("IOTA_AVVANZ_CREDENTIAL_QUERY", "")
+    query_id_personalInformation = os.environ.get("IOTA_CREDENTIAL_QUERY_PERSONAL", "")
+    query_id_education = os.environ.get("IOTA_CREDENTIAL_QUERY_EDUCATION", "")
+    query_id_employment = os.environ.get("IOTA_CREDENTIAL_QUERY_EMPLOYMENT", "")
+    query_id_address = os.environ.get("IOTA_CREDENTIAL_QUERY_ADDRESS", "")
+    query_id_selective_sharing = os.environ.get(
+        "IOTA_CREDENTIAL_QUERY_SELECTIVE_SHARING", ""
+    )
     response_code = request.GET.get("response_code", "")
 
     return render(
@@ -55,7 +65,11 @@ def iota(request):
         "webapp/iota.html",
         {
             "config_id": config_id,
-            "avvanz_query_id": avvanz_query_id,
+            "query_id_personalInformation": query_id_personalInformation,
+            "query_id_education": query_id_education,
+            "query_id_employment": query_id_employment,
+            "query_id_address": query_id_address,
+            "query_id_selective_sharing": query_id_selective_sharing,
             "response_code": response_code,
         },
     )
