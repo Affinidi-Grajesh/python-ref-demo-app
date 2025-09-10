@@ -115,7 +115,7 @@ pip install -r requirements.txt
 python manage.py migrate
 
 # Step 6: Run the Application
-python manage.py runserver
+python manage.py runserver 8010
 ```
 Visit [http://localhost:8010/](http://localhost:8010/) to explore the reference app!
 
