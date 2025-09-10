@@ -1,109 +1,140 @@
-# Setup Personal Access Token (PAT)
+# 🚀 Setup Personal Access Token (PAT)
 
-To create a personal Access Token,use Affinidi CLI
+<div align="center">
+  <img src="./images/Affinidi%20Stacked_FC_RGB.jpg" alt="Affinidi PAT" width="180"/>
+</div>
 
-## Install Affinidi CLI
 
-Follow the guide below if you haven’t installed yet
 
-1. Install Affinidi CLI using NPM
+> [!IMPORTANT]
+> This guide is for learning, experimentation, and prototyping only.
+> **Do not use this configuration as-is in production environments.**
+> Please review, test, and secure your implementation before deploying to production.
 
-`npm install -g @affinidi/cli`
 
-2. Verify that the installation is successful
 
-`affinidi --version`
+## 📖 Table of Contents
+- [Overview](#overview)
+- [Install Affinidi CLI](#install-affinidi-cli)
+- [Create Personal Access Token (PAT)](#create-personal-access-token-pat)
+- [Update Environment Variables](#update-environment-variables)
+- [Further Reading](#further-reading)
+- [Disclaimer](#disclaimer)
 
-> Note that Affinidi CLI requires Node version 18 and above.
 
-### Create Personal Access Token (PAT)
 
-1. Log in to Affinidi CLI by running
+## 🧭 Overview
 
-```sh
-affinidi start
-```
+A **Personal Access Token (PAT)** acts as a machine user for Affinidi services.
+It is required for authentication and automation within your application and can access multiple projects once granted by the user.
 
-2. Once logged in successfully, create token by running below command
+Learn more: [Personal Access Token Documentation](https://docs.affinidi.com/dev-tools/affinidi-cli/manage-token/#how-does-pat-authentication-works)
 
-```sh
-affinidi token create-token
-```
 
-Follow the instruction
 
-```
- ? Enter the value for name BSCPAT
- ? Generate a new keypair for the token? yes
- ? Enter a passphrase to encrypt the private key. Leave it empty for no encryption ******
- ? Add token to active project and grant permissions? yes
- ? Enter the allowed resources, separated by spaces. Use * to allow access to all project resources *
- ? Enter the allowed actions, separated by spaces. Use * to allow all actions *
+## 🛠️ Install Affinidi CLI
 
-```
+1. **Install Affinidi CLI using NPM:**
+   ```sh
+   npm install -g @affinidi/cli
+   ```
 
-Sample response:
+2. **Verify installation:**
+   ```sh
+   affinidi --version
+   ```
+   > Note: Affinidi CLI requires Node.js version 18 or above.
 
-```json
- Creating Personal Access Token... Created successfully!
- Adding token to active project... Added successfully!
- Granting permissions to token... Granted successfully!
- {
-   "id": "**********",
-   "ari": "ari:iam:::token/**********",
-   "ownerAri": "ari:iam:::user/**********",
-   "name": "workshopPAT",
-   "scopes": [
-     "openid",
-     "offline_access"
-   ],
-   "authenticationMethod": {
-     "type": "PRIVATE_KEY",
-     "signingAlgorithm": "RS256",
-     "publicKeyInfo": {
-       "jwks": {
-         "keys": [
-           {
-             "use": "sig",
-             "kty": "RSA",
-             "kid": "**********",
-             "alg": "RS256",
-             "n": "**********",
-             "e": "AQAB"
-           }
-         ]
+
+
+## 🔑 Create Personal Access Token (PAT)
+
+1. **Log in to Affinidi CLI:**
+   ```sh
+   affinidi start
+   ```
+
+2. **Create a token:**
+   ```sh
+   affinidi token create-token
+   ```
+   Follow the prompts:
+   ```
+   ? Enter the value for name BSCPAT
+   ? Generate a new keypair for the token? yes
+   ? Enter a passphrase to encrypt the private key. Leave it empty for no encryption ******
+   ? Add token to active project and grant permissions? yes
+   ? Enter the allowed resources, separated by spaces. Use * to allow access to all project resources *
+   ? Enter the allowed actions, separated by spaces. Use * to allow all actions *
+   ```
+
+3. **Sample response:**
+   ```json
+   {
+     "id": "**********",
+     "ari": "ari:iam:::token/**********",
+     "ownerAri": "ari:iam:::user/**********",
+     "name": "workshopPAT",
+     "scopes": [
+       "openid",
+       "offline_access"
+     ],
+     "authenticationMethod": {
+       "type": "PRIVATE_KEY",
+       "signingAlgorithm": "RS256",
+       "publicKeyInfo": {
+         "jwks": {
+           "keys": [
+             {
+               "use": "sig",
+               "kty": "RSA",
+               "kid": "**********",
+               "alg": "RS256",
+               "n": "**********",
+               "e": "AQAB"
+             }
+           ]
+         }
        }
      }
    }
- }
-
- Use the projectId, tokenId, privateKey, and passphrase (if provided) to use this token with Affinidi TDK
- {
-   "tokenId": "*******",
-   "projectId": "*******",
-   "privateKey": "*******",
-   "passphrase": "******"
- }
- ›   Warning:
- ›   Please save the privateKey and passphrase (if provided) somewhere safe. You will not be able to view them again.
- ›
-
-```
-
-For more details on the command run below command
-
-```sh
-affinidi token create-token --help
-```
-
-3. Update `.env` file for the below variables with values obtained in above response
-
-   ```
-   PROJECT_ID=""
-   KEY_ID="" # optional. required if different key_id is used or else Token_Id=Key_Id
-   TOKEN_ID=""
-   PASSPHRASE="" # Optional. Required if private key is encrypted
-   PRIVATE_KEY=""
    ```
 
-Learn more command from our [Documentation](https://docs.affinidi.com/dev-tools/affinidi-cli/manage-token)
+   Save your `projectId`, `tokenId`, `privateKey`, and `passphrase` securely.
+   > ⚠️ **Warning:** You will not be able to view the private key and passphrase again.
+
+   For more details, run:
+   ```sh
+   affinidi token create-token --help
+   ```
+
+
+
+## ⚙️ Update Environment Variables
+
+After creating your PAT, update your `.env` file with the following variables:
+
+```env
+PROJECT_ID=""
+KEY_ID=""         # Optional. Required if a different key_id is used; otherwise, TOKEN_ID=KEY_ID
+TOKEN_ID=""
+PASSPHRASE=""     # Optional. Required if private key is encrypted
+PRIVATE_KEY=""
+```
+
+**Instructions:**
+- Fill in the values using the details from your PAT creation response.
+- Ensure your `.env` file is kept secure and never committed to source control.
+
+For Token Generation, refer to [AuthProvider.cs](/util/AuthProvider.cs) and [ProjectScopedToken.cs](/util/ProjectScopedToken.cs)
+
+## 📚 Further Reading
+
+- [Affinidi CLI Token Management](https://docs.affinidi.com/dev-tools/affinidi-cli/manage-token)
+- [Affinidi Documentation](https://docs.affinidi.com/docs/)
+
+
+
+## _Disclaimer_
+
+_This documentation is provided for informational purposes only and is not a legal document. For legal terms, conditions, and limitations, please refer to the official Affinidi documentation and your service agreement._
